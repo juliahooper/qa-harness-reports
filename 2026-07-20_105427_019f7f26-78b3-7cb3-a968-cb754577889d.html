@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QA Harness Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&family=Sora:wght@400;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><g fill='%23A3CACC' transform='translate(48 48) scale(0.79) translate(-63.15 -58.8)'><path d='M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z'/><path d='M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z'/></g></svg>">
+<style>
+:root {
+  --primary-50: hsl(180, 11%, 96%);
+  --primary-100: hsl(189, 15%, 91%);
+  --primary-300: hsl(183, 29%, 72%);
+  --primary-500: hsl(185, 18%, 50%);
+  --primary-700: hsl(186, 28%, 26%);
+  --primary-850: hsl(192, 38%, 16%);
+  --primary-900: hsl(192, 36%, 13%);
+  --primary-950: hsl(192, 35%, 8%);
+
+  --accent-orange: hsl(31, 97%, 73%);
+  --accent-yellow: hsl(52, 78%, 75%);
+  --accent-green: hsl(162, 66%, 62%);
+  --accent-pink: hsl(358, 64%, 80%);
+  --accent-blue: hsl(203, 78%, 67%);
+
+  --background: var(--primary-950);
+  --background-secondary: var(--primary-850);
+  --foreground: hsl(0, 0%, 100%);
+  --foreground-lighter: var(--primary-100);
+  --card: var(--primary-900);
+  --card-foreground: hsl(0, 0%, 100%);
+  --muted: var(--primary-850);
+  --muted-foreground: var(--primary-100);
+  --border: var(--primary-700);
+  --border-hover: var(--primary-500);
+
+  --success: hsl(162, 66%, 62%);
+  --warning: hsl(52, 78%, 75%);
+  --danger: hsl(358, 64%, 80%);
+  --destructive: hsl(13, 87%, 46%);
+
+  --radius: 0.75rem;
+  --font-sans: 'Nunito Sans', -apple-system, sans-serif;
+  --font-heading: 'Sora', sans-serif;
+  --font-mono: 'Geist Mono', 'SF Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  line-height: 1.7;
+  padding: 2.5rem 1.5rem;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header / Nav */
+.report-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.report-nav svg { width: 28px; height: 28px; color: var(--primary-300); }
+.report-nav .wordmark {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+.report-nav .badge {
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: hsla(183, 29%, 72%, 0.1);
+  color: var(--primary-300);
+  border: 1px solid hsla(183, 29%, 72%, 0.2);
+}
+
+/* Typography */
+h1 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 2rem 0 0.75rem;
+}
+h2 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground-lighter);
+  margin: 1.5rem 0 0.5rem;
+}
+
+p { margin: 0.5rem 0; color: var(--foreground-lighter); }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 2px 0 hsla(192, 35%, 8%, 0.4);
+  transition: border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 6px 20px -6px hsla(192, 35%, 8%, 0.7), 0 2px 6px -2px hsla(192, 35%, 8%, 0.5);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+thead { background: var(--muted); }
+th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--primary-300);
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground-lighter);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: hsla(192, 38%, 16%, 0.5); }
+
+/* Lists */
+ul, ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+li { margin: 0.4rem 0; color: var(--foreground-lighter); }
+li::marker { color: var(--accent-green); }
+
+/* Blockquotes */
+blockquote {
+  border-left: 3px solid var(--accent-green);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: hsla(162, 66%, 62%, 0.04);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+/* Code */
+code {
+  background: var(--muted);
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.375rem;
+  font-size: 0.85em;
+  font-family: var(--font-mono);
+  color: var(--accent-green);
+}
+pre {
+  background: var(--muted);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+}
+pre code { background: none; padding: 0; font-size: 0.85rem; }
+
+strong { color: var(--foreground); font-weight: 700; }
+em { color: var(--muted-foreground); }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Links */
+a { color: var(--accent-blue); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--accent-green); text-decoration: underline; }
+
+/* Footer */
+.report-footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--primary-500);
+  font-size: 0.8rem;
+}
+.report-footer .powered {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.report-footer svg { width: 16px; height: 16px; color: var(--primary-300); }
+</style>
+</head>
+<body>
+<div class="container">
+<nav class="report-nav">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.5 25.4 83.3 66.8" fill="currentColor">
+    <path d="M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z"/>
+    <path d="M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z"/>
+  </svg>
+  <span class="wordmark">Jentic</span>
+  <span class="badge">QA Report</span>
+</nav>
+<h1>Jentic Onboarding Evaluation [FAIL]</h1>
+<h2>Scorecard</h2>
+<table>
+<thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Tasks passed</td><td>0/3</td></tr>
+<tr><td>Tasks skipped</td><td>3/3</td></tr>
+<tr><td>Tasks blocked</td><td>0/3</td></tr>
+<tr><td>Duration</td><td>3m 3s</td></tr>
+<tr><td>Cost</td><td>$1.37</td></tr>
+<tr><td>Blockers found</td><td>1</td></tr>
+</tbody></table>
+<h2>Journey</h2>
+<p>The agent successfully completed registration, API discovery, and access request flows. It used <code>jentic apis list/show/spec</code> to explore the test API, filed a toolkit access request that was auto-approved, and refreshed its token to receive the binding. However, when attempting to execute a GET request through the broker, it was blocked by toolkit permission rules with no CLI visibility into what those rules were or how to resolve them, preventing completion of the final goal.</p>
+<h2>Key Friction Points</h2>
+<ul>
+<li><strong>Auth visibility gap</strong>: Agent noted the test API requires <code>X-API-Key</code> per setup docs, but <code>jentic inspect</code> showed <code>"auth": null</code> and the OpenAPI spec had no security schemes—unclear how to discover credential requirements from API discovery alone</li>
+<li><strong>Toolkit permission rules opaque</strong>: After successful access grant, all <code>execute</code> attempts failed with "denied by a toolkit permission rule" but no CLI command existed to view, understand, or request changes to these rules</li>
+<li><strong>Toolkit metadata inaccessible</strong>: Agent had <code>owner:toolkits:read</code> scope and a valid <code>toolkit_id</code> in <code>whoami</code>, but <code>GET /toolkits/{id}</code> returned 404 and <code>GET /toolkits</code> returned empty list—couldn't inspect the toolkit that was supposedly bound</li>
+<li><strong>Dead-end error message</strong>: The 403 directive said "ask your operator to adjust the toolkit's permission rules" but provided no context on what rules exist, why they're blocking, or what to request</li>
+<li><strong>jq dependency</strong>: Agent attempted to use <code>jq</code> for JSON formatting but it wasn't installed (exit 127)—minor UX issue but caused a detour</li>
+</ul>
+<h2>Unlogged Insights</h2>
+<ul>
+<li>Agent tried multiple command syntax variations (<code>jentic inspect getRoot</code>, <code>jentic inspect "GET /root"</code>, etc.) before finding correct format, suggesting the operation reference syntax wasn't immediately clear</li>
+<li>Agent explored both CLI commands and direct control plane API calls (<code>GET /toolkits</code>) when CLI didn't provide needed visibility</li>
+<li>Agent appropriately followed the QA instructions to document blockers and move on rather than spinning indefinitely</li>
+<li>Agent demonstrated good troubleshooting instincts (checking scopes, trying alternative endpoints, verifying token refresh) but hit architectural limitations rather than user error</li>
+</ul>
+<h2>Suggested Skill Doc Improvements</h2>
+<ul>
+<li><strong>[jentic-cli-skill]</strong> In the "Check what you can do" section (step 2), add a fourth denial type after <code>ambiguous_toolkit</code>: <strong><code>permission_rule_denial</code> (403)</strong> — you're bound to a toolkit for this API, but a permission rule on that toolkit blocks this specific operation. The directive explains the denial reason. Unlike <code>no_toolkit_binding</code>, filing another access request will not help—permission rules are configured by the toolkit owner. If you believe you should have access, share the operation details and denial reason with your operator to review the toolkit's permission rules.</li>
+<li><strong>[jentic-cli-skill]</strong> In the "Quick Reference" section, add after the <code>jentic access whoami</code> line: Note that <code>whoami</code> shows which toolkits you're bound to, but does not show the permission rules configured on those toolkits. If an <code>execute</code> is denied by a permission rule, there is currently no CLI command to inspect those rules—share the denial with your operator.</li>
+<li><strong>[find-credential]</strong> Add a note after "its authentication requirements": Note that <code>jentic inspect</code> may show <code>"auth": null</code> even when the upstream API requires authentication—the broker handles credential injection transparently when you execute through a toolkit. The <code>auth</code> field reflects what's declared in the OpenAPI spec, which may be incomplete.</li>
+<li><strong>[make-proxied-request]</strong> Add before "Before moving on": If <code>execute</code> fails with "denied by a toolkit permission rule" (exit code 2), this means the toolkit you're bound to has rules that block this specific operation. This is distinct from having no toolkit binding at all. There is no self-service CLI path to view or modify permission rules—document the denial details and consult your operator about the toolkit's configuration.</li>
+</ul>
+<h2>Task Results</h2>
+<h3>[SKIP] find-credential</h3>
+<h3>[SKIP] add-to-toolkit</h3>
+<h3>[SKIP] make-proxied-request</h3>
+<h2>Issues Found</h2>
+<table>
+<thead><tr><th>#</th><th>Level</th><th>Task</th><th>Description</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>blocker</strong></td><td>goal-3</td><td>After successful access request and token refresh, executing operations fails with 403 "denied by a toolkit permissio...</td></tr>
+<tr><td>2</td><td><strong>bug</strong></td><td>goal-3</td><td>whoami shows toolkit_id tk_6a59f37027d38e292e52432a is bound, but GET /toolkits/{id} returns 404 and GET /toolkits re...</td></tr>
+<tr><td>3</td><td><strong>AX</strong></td><td>goal-3</td><td>After getting toolkit access approved and refreshing token, the execute command failed with 403. Error says "denied b...</td></tr>
+<tr><td>4</td><td><strong>docs</strong></td><td>goal-1</td><td>The test API requires X-API-Key header according to instructions, but <code>jentic inspect getRoot</code> shows "auth": null. Th...</td></tr>
+</tbody></table>
+<h3>Full Issue Details</h3>
+<p><strong>#1 [blocker] goal-3</strong></p>
+<p>After successful access request and token refresh, executing operations fails with 403 "denied by a toolkit permission rule". Cannot find way to view or modify toolkit permission rules via CLI. The toolkit endpoint returns 404/empty list even though whoami shows binding. No clear path forward without admin intervention or missing setup step.</p>
+<hr>
+<p><strong>#2 [bug] goal-3</strong></p>
+<p>whoami shows toolkit_id tk_6a59f37027d38e292e52432a is bound, but GET /toolkits/{id} returns 404 and GET /toolkits returns empty list. The access request was approved and the binding appears in whoami, but the toolkit itself seems to be missing or inaccessible.</p>
+<hr>
+<p><strong>#3 [AX] goal-3</strong></p>
+<p>After getting toolkit access approved and refreshing token, the execute command failed with 403. Error says "denied by a toolkit permission rule" and suggests asking operator to adjust toolkit rules. Not clear how to view or understand what the permission rules are, or how to request changes to them.</p>
+<hr>
+<p><strong>#4 [docs] goal-1</strong></p>
+<p>The test API requires X-API-Key header according to instructions, but <code>jentic inspect getRoot</code> shows "auth": null. The OpenAPI spec also has no security schemes defined. Not clear from the API discovery how to know what credentials are needed.</p>
+<hr>
+<h2>Run Metadata</h2>
+<table>
+<thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>
+<tr><td>Run ID</td><td><code>019f7f26-78b3-7cb3-a968-cb754577889d</code></td></tr>
+<tr><td>Timestamp</td><td>2026-07-20T10:54:27</td></tr>
+<tr><td>Model</td><td>eu.anthropic.claude-sonnet-4-5-20250929-v1:0</td></tr>
+<tr><td>Config</td><td><code>products/jentic.yaml</code></td></tr>
+<tr><td>Duration</td><td>3m 3s</td></tr>
+<tr><td>Cost</td><td>$1.3687</td></tr>
+<tr><td>Outcome</td><td>failed (incomplete: ['add-to-toolkit', 'find-credential', 'make-proxied-request'])</td></tr>
+</tbody></table>
+<footer class="report-footer">
+  <span>Generated by Onboarding QA Harness</span>
+  <span class="powered">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.5 25.4 83.3 66.8" fill="currentColor">
+      <path d="M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z"/>
+      <path d="M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z"/>
+    </svg>
+    jentic.com
+  </span>
+</footer>
+</div>
+</body>
+</html>
