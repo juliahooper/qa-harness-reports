@@ -1,0 +1,46 @@
+{
+  "run_id": "019ff14d-b32c-7493-989d-f7c3a44dd7ce",
+  "verified_at": "2026-08-11T14:51:20.901251+00:00",
+  "overall_passed": true,
+  "tasks": {
+    "register-agent": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "agent_created",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Agent registration recorded in audit log",
+          "mandatory": true
+        },
+        {
+          "id": "agent_approved",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/agents/agnt_6a7b36d11afd2544e10f42fe \u2192 status=active, approved_at=2026-08-11T14:50:59.192204Z",
+          "label": "Agent is active and approved",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 2,
+      "mandatory_total": 2
+    },
+    "authenticate": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "token_obtained",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Token issuance recorded in audit log",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 1,
+      "mandatory_total": 1
+    }
+  }
+}
