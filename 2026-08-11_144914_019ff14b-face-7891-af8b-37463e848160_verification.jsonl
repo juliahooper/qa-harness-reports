@@ -1,0 +1,30 @@
+{
+  "run_id": "019ff14b-face-7891-af8b-37463e848160",
+  "verified_at": "2026-08-11T14:49:07.667288+00:00",
+  "overall_passed": true,
+  "tasks": {
+    "register-agent": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "agent_created",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Agent registration recorded in audit log",
+          "mandatory": true
+        },
+        {
+          "id": "agent_approved",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/agents/agnt_6a7b365493df374c56e14ba8 \u2192 status=active, approved_at=2026-08-11T14:48:58.339455Z",
+          "label": "Agent is active and approved",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 2,
+      "mandatory_total": 2
+    }
+  }
+}
