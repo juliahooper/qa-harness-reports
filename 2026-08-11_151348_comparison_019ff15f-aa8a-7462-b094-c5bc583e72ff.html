@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Comparison Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&family=Sora:wght@400;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><g fill='%23A3CACC' transform='translate(48 48) scale(0.79) translate(-63.15 -58.8)'><path d='M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z'/><path d='M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z'/></g></svg>">
+<style>
+:root {
+  --primary-50: hsl(180, 11%, 96%);
+  --primary-100: hsl(189, 15%, 91%);
+  --primary-300: hsl(183, 29%, 72%);
+  --primary-500: hsl(185, 18%, 50%);
+  --primary-700: hsl(186, 28%, 26%);
+  --primary-850: hsl(192, 38%, 16%);
+  --primary-900: hsl(192, 36%, 13%);
+  --primary-950: hsl(192, 35%, 8%);
+
+  --accent-orange: hsl(31, 97%, 73%);
+  --accent-yellow: hsl(52, 78%, 75%);
+  --accent-green: hsl(162, 66%, 62%);
+  --accent-pink: hsl(358, 64%, 80%);
+  --accent-blue: hsl(203, 78%, 67%);
+
+  --model-haiku: hsl(142, 60%, 55%);
+  --model-sonnet: hsl(190, 80%, 55%);
+  --model-opus: hsl(290, 60%, 70%);
+
+  --background: var(--primary-950);
+  --background-secondary: var(--primary-850);
+  --foreground: hsl(0, 0%, 100%);
+  --foreground-lighter: var(--primary-100);
+  --card: var(--primary-900);
+  --card-foreground: hsl(0, 0%, 100%);
+  --muted: var(--primary-850);
+  --muted-foreground: var(--primary-100);
+  --border: var(--primary-700);
+  --border-hover: var(--primary-500);
+
+  --success: hsl(162, 66%, 62%);
+  --warning: hsl(52, 78%, 75%);
+  --danger: hsl(358, 64%, 80%);
+  --destructive: hsl(13, 87%, 46%);
+
+  --radius: 0.75rem;
+  --font-sans: 'Nunito Sans', -apple-system, sans-serif;
+  --font-heading: 'Sora', sans-serif;
+  --font-mono: 'Geist Mono', 'SF Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  line-height: 1.7;
+  padding: 2.5rem 1.5rem;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Header / Nav */
+.report-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.report-nav svg { width: 28px; height: 28px; color: var(--primary-300); }
+.report-nav .wordmark {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+.report-nav .badge {
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: hsla(183, 29%, 72%, 0.1);
+  color: var(--primary-300);
+  border: 1px solid hsla(183, 29%, 72%, 0.2);
+}
+
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+.tab {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: none;
+  color: var(--primary-300);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--foreground); }
+.tab.active {
+  color: var(--foreground);
+  border-bottom-color: var(--tab-color, var(--primary-300));
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Typography */
+h1 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 2rem 0 0.75rem;
+}
+h2 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground-lighter);
+  margin: 1.5rem 0 0.5rem;
+}
+
+p { margin: 0.5rem 0; color: var(--foreground-lighter); }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+thead { background: var(--muted); }
+th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--primary-300);
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground-lighter);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: hsla(192, 38%, 16%, 0.5); }
+
+/* Lists */
+ul, ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+li { margin: 0.4rem 0; color: var(--foreground-lighter); }
+li::marker { color: var(--accent-green); }
+
+/* Blockquotes */
+blockquote {
+  border-left: 3px solid var(--accent-green);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: hsla(162, 66%, 62%, 0.04);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+/* Code */
+code {
+  background: var(--muted);
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.375rem;
+  font-size: 0.85em;
+  font-family: var(--font-mono);
+  color: var(--accent-green);
+}
+pre {
+  background: var(--muted);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+}
+pre code { background: none; padding: 0; font-size: 0.85rem; }
+
+strong { color: var(--foreground); font-weight: 700; }
+em { color: var(--muted-foreground); }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Links */
+a { color: var(--accent-blue); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--accent-green); text-decoration: underline; }
+
+/* Footer */
+.report-footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--primary-500);
+  font-size: 0.8rem;
+}
+.report-footer .powered {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.report-footer svg { width: 16px; height: 16px; color: var(--primary-300); }
+</style>
+</head>
+<body>
+<div class="container">
+<nav class="report-nav">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.5 25.4 83.3 66.8" fill="currentColor">
+    <path d="M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z"/>
+    <path d="M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z"/>
+  </svg>
+  <span class="wordmark">Jentic</span>
+  <span class="badge">Model Comparison</span>
+</nav>
+
+<nav class="tab-bar">
+  <button class="tab active" data-tab="comparison" style="--tab-color: var(--primary-300)">Comparison</button>
+  <button class="tab" data-tab="haiku" style="--tab-color: var(--model-haiku)">haiku</button>
+  <button class="tab" data-tab="opus" style="--tab-color: var(--model-opus)">opus</button>
+  <button class="tab" data-tab="sonnet" style="--tab-color: var(--model-sonnet)">sonnet</button>
+</nav>
+
+<div class="tab-content active" id="tab-comparison">
+<h1>Model Comparison Report</h1>
+<p><em>Generated: 2026-08-11 15:13 UTC</em></p>
+<h2>Summary</h2>
+<p>All three models failed to complete the onboarding task, but with varying degrees of progress and different failure modes. Haiku was fastest and cheapest but completed only 2/5 tasks with significant hallucination issues. Sonnet achieved the best task completion (3/5) with good exploration depth despite verification failures. Opus completed 3/5 tasks but skipped 2 tasks entirely, showing incomplete engagement with the workflow.</p>
+<h2>Quantitative Comparison</h2>
+<table>
+<thead><tr><th>Metric</th><th>haiku</th><th>opus</th><th>sonnet</th></tr></thead><tbody>
+<tr><td>Status</td><td><strong>failed</strong></td><td><strong>failed</strong></td><td><strong>failed</strong></td></tr>
+<tr><td>Duration</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>Cost</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>Tasks Completed</td><td>—</td><td>—</td><td>—</td></tr>
+</tbody></table>
+<h2>Efficiency Comparison</h2>
+<ul>
+<li><strong>Speed</strong>: Haiku (78s) &gt;&gt; Sonnet (146s) &gt; Opus (162s)</li>
+<li><strong>Cost</strong>: Haiku ($0.24) &lt;&lt; Sonnet ($0.72) &lt; Opus ($0.80)</li>
+<li><strong>Token Usage</strong>: Haiku most efficient (1.69M in/138 out), Opus and Sonnet similar (~1.72M in, 355-391 out)</li>
+</ul>
+<h2>Quality Comparison</h2>
+<ul>
+<li><strong>Task Completion</strong>: Sonnet (3/5 passed) = Opus (3/5 passed) &gt; Haiku (2/5 passed)</li>
+<li><strong>Exploration Depth</strong>: Sonnet demonstrated superior discovery behavior, finding command syntax issues and exploring toolkit binding concepts organically</li>
+<li><strong>Bugs Found</strong>: Sonnet identified 2 bugs + 2 UX issues (command discoverability, operation inspection syntax). Haiku found 3 bugs but all were actually hallucinations. Opus logged no observations.</li>
+<li><strong>Reliability</strong>: Haiku exhibited severe hallucination problems (claimed success on 3 tasks with zero platform evidence). Sonnet and Opus showed more accurate self-assessment.</li>
+<li><strong>Winner</strong>: Sonnet for depth and genuine issue discovery, despite verification failures</li>
+</ul>
+<h2>Approach Differences</h2>
+<ul>
+<li><strong>Haiku</strong>: Rushed through tasks, fabricated success states without verification, minimal exploration or error handling</li>
+<li><strong>Sonnet</strong>: Methodical exploration, discovered command syntax issues organically, attempted advanced tooling (jq), noted documentation gaps</li>
+<li><strong>Opus</strong>: Conservative approach with task skipping behavior (2 skipped vs 0 for others), less detailed logging, avoided getting blocked but also avoided full engagement</li>
+<li><strong>Error Handling</strong>: Sonnet actively debugged command syntax (<code>jentic profile show</code> → <code>jentic profile view</code>). Haiku proceeded despite failures. Opus sidestepped issues via skipping.</li>
+<li><strong>Verification</strong>: Only Sonnet showed awareness of verification failures and discrepancies between perceived vs actual success</li>
+</ul>
+<h2>Recommendations</h2>
+<ul>
+<li><strong>For production onboarding tasks</strong>: <strong>Sonnet</strong> - Best balance of completion rate, genuine exploration, and bug discovery. The 2.5x cost vs Haiku is justified by avoiding hallucinated results that could mislead stakeholders.</li>
+<li><strong>For cost-sensitive, low-stakes exploration</strong>: <strong>Haiku with human oversight</strong> - Speed and cost are excellent, but requires verification layer to catch hallucinations.</li>
+<li><strong>Key insight</strong>: Haiku's hallucination pattern (claiming success with zero platform evidence) is a critical failure mode for QA tasks where ground truth matters. Sonnet's verification awareness and UX issue discovery provide actionable insights worth the premium.</li>
+</ul>
+</div>
+<div class="tab-content" id="tab-haiku">
+<blockquote>
+<p><strong>FAILED</strong>: incomplete: tasks ['add-to-toolkit', 'find-credential', 'make-proxied-request'] missing expected operations</p>
+</blockquote>
+</div>
+<div class="tab-content" id="tab-opus">
+<blockquote>
+<p><strong>FAILED</strong>: incomplete: tasks ['find-credential', 'make-proxied-request'] missing expected operations</p>
+</blockquote>
+</div>
+<div class="tab-content" id="tab-sonnet">
+<blockquote>
+<p><strong>FAILED</strong>: incomplete: tasks ['find-credential', 'make-proxied-request'] missing expected operations</p>
+</blockquote>
+<hr>
+</div>
+
+
+<footer class="report-footer">
+  <span>Generated by Onboarding QA Harness</span>
+  <span class="powered">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.5 25.4 83.3 66.8" fill="currentColor">
+      <path d="M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z"/>
+      <path d="M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z"/>
+    </svg>
+    jentic.com
+  </span>
+</footer>
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
