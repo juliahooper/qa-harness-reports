@@ -1,0 +1,115 @@
+{
+  "run_id": "019ff15f-aa9c-7d32-8c90-213b85976761",
+  "verified_at": "2026-08-11T15:12:54.017824+00:00",
+  "overall_passed": false,
+  "tasks": {
+    "register-agent": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "agent_created",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Agent registration recorded in audit log",
+          "mandatory": true
+        },
+        {
+          "id": "agent_approved",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/agents/agnt_6a7b3b6c85153a4c3cc04950 \u2192 status=active, approved_at=2026-08-11T15:10:41.598394Z",
+          "label": "Agent is active and approved",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 2,
+      "mandatory_total": 2
+    },
+    "authenticate": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "token_obtained",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Token issuance recorded in audit log",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 1,
+      "mandatory_total": 1
+    },
+    "find-credential": {
+      "passed": false,
+      "mode": "all_required",
+      "score": 0.0,
+      "criteria": [
+        {
+          "id": "api_details_accessed",
+          "passed": false,
+          "evidence": "docker log error (:control_plane): Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))",
+          "label": "Agent accessed test API details",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 0,
+      "mandatory_total": 1
+    },
+    "add-to-toolkit": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "access_request_filed",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/access-requests \u2192 1 request(s)",
+          "label": "Access request was filed",
+          "mandatory": true
+        },
+        {
+          "id": "access_request_approved",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/access-requests \u2192 1 request(s)",
+          "label": "Access request was approved",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 2,
+      "mandatory_total": 2
+    },
+    "make-proxied-request": {
+      "passed": false,
+      "mode": "mandatory_plus_optional",
+      "score": 0.6666666666666666,
+      "criteria": [
+        {
+          "id": "execution_exists",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/executions \u2192 1 record(s)",
+          "label": "Execution record exists",
+          "mandatory": true
+        },
+        {
+          "id": "test_api_received",
+          "passed": false,
+          "evidence": "docker log error (test-api): Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))",
+          "label": "Test API received the proxied request",
+          "mandatory": true
+        },
+        {
+          "id": "execution_success",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/executions \u2192 1 record(s)",
+          "label": "At least one execution completed successfully",
+          "mandatory": false
+        }
+      ],
+      "mandatory_passed": 1,
+      "mandatory_total": 2
+    }
+  }
+}
