@@ -1,0 +1,115 @@
+{
+  "run_id": "019ff16f-9085-7ad1-884e-4c9b5ba78858",
+  "verified_at": "2026-08-11T15:29:50.493902+00:00",
+  "overall_passed": false,
+  "tasks": {
+    "register-agent": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "agent_created",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Agent registration recorded in audit log",
+          "mandatory": true
+        },
+        {
+          "id": "agent_approved",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/agents/agnt_6a7b3f7b191a4591297246ce \u2192 status=active, approved_at=2026-08-11T15:27:59.760656Z",
+          "label": "Agent is active and approved",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 2,
+      "mandatory_total": 2
+    },
+    "authenticate": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "token_obtained",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Token issuance recorded in audit log",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 1,
+      "mandatory_total": 1
+    },
+    "find-credential": {
+      "passed": false,
+      "mode": "all_required",
+      "score": 0.0,
+      "criteria": [
+        {
+          "id": "api_details_accessed",
+          "passed": false,
+          "evidence": "container=:control_plane, pattern='GET.*/apis/jentic-test': 0 match(es) in 0 lines",
+          "label": "Agent accessed test API details",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 0,
+      "mandatory_total": 1
+    },
+    "add-to-toolkit": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "access_request_filed",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/access-requests \u2192 1 request(s)",
+          "label": "Access request was filed",
+          "mandatory": true
+        },
+        {
+          "id": "access_request_approved",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/access-requests \u2192 1 request(s)",
+          "label": "Access request was approved",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 2,
+      "mandatory_total": 2
+    },
+    "make-proxied-request": {
+      "passed": false,
+      "mode": "mandatory_plus_optional",
+      "score": 0.3333333333333333,
+      "criteria": [
+        {
+          "id": "execution_exists",
+          "passed": false,
+          "evidence": "GET http://jentic-one:8000/executions \u2192 0 record(s)",
+          "label": "Execution record exists",
+          "mandatory": true
+        },
+        {
+          "id": "test_api_received",
+          "passed": true,
+          "evidence": "container=test-api, pattern='GET /get': 31 match(es) in 31 lines",
+          "label": "Test API received the proxied request",
+          "mandatory": true
+        },
+        {
+          "id": "execution_success",
+          "passed": false,
+          "evidence": "GET http://jentic-one:8000/executions \u2192 0 record(s)",
+          "label": "At least one execution completed successfully",
+          "mandatory": false
+        }
+      ],
+      "mandatory_passed": 1,
+      "mandatory_total": 2
+    }
+  }
+}
