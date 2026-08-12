@@ -1,0 +1,115 @@
+{
+  "run_id": "019ff5bb-b713-7d40-b96e-78d45797755f",
+  "verified_at": "2026-08-12T11:31:16.300917+00:00",
+  "overall_passed": false,
+  "tasks": {
+    "register-agent": {
+      "passed": false,
+      "mode": "all_required",
+      "score": 0.5,
+      "criteria": [
+        {
+          "id": "agent_created",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Agent registration recorded in audit log",
+          "mandatory": true
+        },
+        {
+          "id": "agent_approved",
+          "passed": false,
+          "evidence": "agent API error: Client error '404 Not Found' for url 'http://jentic-one:8000/agents/:agent_id'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404",
+          "label": "Agent is active and approved",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 1,
+      "mandatory_total": 2
+    },
+    "authenticate": {
+      "passed": true,
+      "mode": "all_required",
+      "score": 1.0,
+      "criteria": [
+        {
+          "id": "token_obtained",
+          "passed": true,
+          "evidence": "GET http://jentic-one:8000/audit \u2192 50 event(s) (latest at ?)",
+          "label": "Token issuance recorded in audit log",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 1,
+      "mandatory_total": 1
+    },
+    "find-credential": {
+      "passed": false,
+      "mode": "all_required",
+      "score": 0.0,
+      "criteria": [
+        {
+          "id": "api_details_accessed",
+          "passed": false,
+          "evidence": "container=:control_plane, pattern='GET.*/apis': 0 match(es) in 289 lines",
+          "label": "Agent accessed test API details",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 0,
+      "mandatory_total": 1
+    },
+    "add-to-toolkit": {
+      "passed": false,
+      "mode": "all_required",
+      "score": 0.0,
+      "criteria": [
+        {
+          "id": "access_request_filed",
+          "passed": false,
+          "evidence": "GET http://jentic-one:8000/access-requests \u2192 0 request(s)",
+          "label": "Access request was filed",
+          "mandatory": true
+        },
+        {
+          "id": "access_request_approved",
+          "passed": false,
+          "evidence": "GET http://jentic-one:8000/access-requests \u2192 0 request(s)",
+          "label": "Access request was approved",
+          "mandatory": true
+        }
+      ],
+      "mandatory_passed": 0,
+      "mandatory_total": 2
+    },
+    "make-proxied-request": {
+      "passed": false,
+      "mode": "mandatory_plus_optional",
+      "score": 0.3333333333333333,
+      "criteria": [
+        {
+          "id": "execution_exists",
+          "passed": false,
+          "evidence": "GET http://jentic-one:8000/executions \u2192 0 record(s)",
+          "label": "Execution record exists",
+          "mandatory": true
+        },
+        {
+          "id": "test_api_received",
+          "passed": true,
+          "evidence": "container=test-api, pattern='GET /get': 25 match(es) in 25 lines",
+          "label": "Test API received the proxied request",
+          "mandatory": true
+        },
+        {
+          "id": "execution_success",
+          "passed": false,
+          "evidence": "GET http://jentic-one:8000/executions \u2192 0 record(s)",
+          "label": "At least one execution completed successfully",
+          "mandatory": false
+        }
+      ],
+      "mandatory_passed": 1,
+      "mandatory_total": 2
+    }
+  }
+}
