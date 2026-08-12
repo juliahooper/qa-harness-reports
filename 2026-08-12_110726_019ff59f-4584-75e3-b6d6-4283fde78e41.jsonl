@@ -1,0 +1,8 @@
+{"task_id": "register-agent", "type": "note", "level": "bug", "message": "Registration audit event recorded but agent entity not created or retrievable via API (404 on /agents/:agent_id)", "_timestamp": "2026-08-12T11:06:57.795636+00:00"}
+{"task_id": "authenticate", "type": "goal_complete", "level": null, "message": "Token issuance recorded in audit log", "_timestamp": "2026-08-12T11:06:57.795654+00:00"}
+{"task_id": "discover-apis", "type": "note", "level": "blocker", "message": "Agent never attempted to access catalog or APIs endpoints; no GET /apis or /catalog requests logged", "_timestamp": "2026-08-12T11:06:57.795659+00:00"}
+{"task_id": "find-credential", "type": "note", "level": "blocker", "message": "No attempt to access test API details; GET /apis endpoint never hit", "_timestamp": "2026-08-12T11:06:57.795662+00:00"}
+{"task_id": "inspect-api-operations", "type": "note", "level": "blocker", "message": "Operations endpoint never accessed; no GET /operations requests logged", "_timestamp": "2026-08-12T11:06:57.795666+00:00"}
+{"task_id": "read-api-spec", "type": "note", "level": "blocker", "message": "OpenAPI spec endpoint never accessed; no GET /openapi requests logged", "_timestamp": "2026-08-12T11:06:57.795669+00:00"}
+{"task_id": "add-to-toolkit", "type": "note", "level": "blocker", "message": "No access requests filed; agent did not attempt to request toolkit access", "_timestamp": "2026-08-12T11:06:57.795671+00:00"}
+{"task_id": "make-proxied-request", "type": "note", "level": "bug", "message": "Test API received 66 GET /get requests but no execution records created in platform; requests bypassed broker or logging failed", "_timestamp": "2026-08-12T11:06:57.795673+00:00"}
