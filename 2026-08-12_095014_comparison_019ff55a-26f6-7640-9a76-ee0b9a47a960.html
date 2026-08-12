@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Comparison Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&family=Sora:wght@400;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><g fill='%23A3CACC' transform='translate(48 48) scale(0.79) translate(-63.15 -58.8)'><path d='M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z'/><path d='M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z'/></g></svg>">
+<style>
+:root {
+  --primary-50: hsl(180, 11%, 96%);
+  --primary-100: hsl(189, 15%, 91%);
+  --primary-300: hsl(183, 29%, 72%);
+  --primary-500: hsl(185, 18%, 50%);
+  --primary-700: hsl(186, 28%, 26%);
+  --primary-850: hsl(192, 38%, 16%);
+  --primary-900: hsl(192, 36%, 13%);
+  --primary-950: hsl(192, 35%, 8%);
+
+  --accent-orange: hsl(31, 97%, 73%);
+  --accent-yellow: hsl(52, 78%, 75%);
+  --accent-green: hsl(162, 66%, 62%);
+  --accent-pink: hsl(358, 64%, 80%);
+  --accent-blue: hsl(203, 78%, 67%);
+
+  --model-haiku: hsl(142, 60%, 55%);
+  --model-sonnet: hsl(190, 80%, 55%);
+  --model-opus: hsl(290, 60%, 70%);
+
+  --background: var(--primary-950);
+  --background-secondary: var(--primary-850);
+  --foreground: hsl(0, 0%, 100%);
+  --foreground-lighter: var(--primary-100);
+  --card: var(--primary-900);
+  --card-foreground: hsl(0, 0%, 100%);
+  --muted: var(--primary-850);
+  --muted-foreground: var(--primary-100);
+  --border: var(--primary-700);
+  --border-hover: var(--primary-500);
+
+  --success: hsl(162, 66%, 62%);
+  --warning: hsl(52, 78%, 75%);
+  --danger: hsl(358, 64%, 80%);
+  --destructive: hsl(13, 87%, 46%);
+
+  --radius: 0.75rem;
+  --font-sans: 'Nunito Sans', -apple-system, sans-serif;
+  --font-heading: 'Sora', sans-serif;
+  --font-mono: 'Geist Mono', 'SF Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  line-height: 1.7;
+  padding: 2.5rem 1.5rem;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Header / Nav */
+.report-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.report-nav svg { width: 28px; height: 28px; color: var(--primary-300); }
+.report-nav .wordmark {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+.report-nav .badge {
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: hsla(183, 29%, 72%, 0.1);
+  color: var(--primary-300);
+  border: 1px solid hsla(183, 29%, 72%, 0.2);
+}
+
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+.tab {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: none;
+  color: var(--primary-300);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--foreground); }
+.tab.active {
+  color: var(--foreground);
+  border-bottom-color: var(--tab-color, var(--primary-300));
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Typography */
+h1 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 2rem 0 0.75rem;
+}
+h2 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground-lighter);
+  margin: 1.5rem 0 0.5rem;
+}
+
+p { margin: 0.5rem 0; color: var(--foreground-lighter); }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+thead { background: var(--muted); }
+th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--primary-300);
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground-lighter);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: hsla(192, 38%, 16%, 0.5); }
+
+/* Lists */
+ul, ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+li { margin: 0.4rem 0; color: var(--foreground-lighter); }
+li::marker { color: var(--accent-green); }
+
+/* Blockquotes */
+blockquote {
+  border-left: 3px solid var(--accent-green);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: hsla(162, 66%, 62%, 0.04);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+/* Code */
+code {
+  background: var(--muted);
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.375rem;
+  font-size: 0.85em;
+  font-family: var(--font-mono);
+  color: var(--accent-green);
+}
+pre {
+  background: var(--muted);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+}
+pre code { background: none; padding: 0; font-size: 0.85rem; }
+
+strong { color: var(--foreground); font-weight: 700; }
+em { color: var(--muted-foreground); }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Links */
+a { color: var(--accent-blue); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--accent-green); text-decoration: underline; }
+
+/* Footer */
+.report-footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--primary-500);
+  font-size: 0.8rem;
+}
+.report-footer .powered {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.report-footer svg { width: 16px; height: 16px; color: var(--primary-300); }
+</style>
+</head>
+<body>
+<div class="container">
+<nav class="report-nav">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.5 25.4 83.3 66.8" fill="currentColor">
+    <path d="M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z"/>
+    <path d="M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z"/>
+  </svg>
+  <span class="wordmark">Jentic</span>
+  <span class="badge">Model Comparison</span>
+</nav>
+
+<nav class="tab-bar">
+  <button class="tab active" data-tab="comparison" style="--tab-color: var(--primary-300)">Comparison</button>
+  <button class="tab" data-tab="sonnet" style="--tab-color: var(--model-sonnet)">sonnet</button>
+  <button class="tab" data-tab="haiku" style="--tab-color: var(--model-haiku)">haiku</button>
+  <button class="tab" data-tab="opus" style="--tab-color: var(--model-opus)">opus</button>
+</nav>
+
+<div class="tab-content active" id="tab-comparison">
+<h1>Model Comparison Report</h1>
+<p><em>Generated: 2026-08-12 09:50 UTC</em></p>
+<h2>Summary</h2>
+<p>All three models successfully completed the onboarding task (11/11 tasks passed), but with dramatically different efficiency profiles. Haiku completed the task in 95 seconds at $0.37, while Sonnet and Opus took 385s/$1.96 and 307s/$1.68 respectively. Despite its speed advantage, Haiku still identified key UX issues, though Sonnet provided the most detailed observational logging.</p>
+<h2>Quantitative Comparison</h2>
+<table>
+<thead><tr><th>Metric</th><th>sonnet</th><th>haiku</th><th>opus</th></tr></thead><tbody>
+<tr><td>Status</td><td><strong>succeeded</strong></td><td><strong>succeeded</strong></td><td><strong>succeeded</strong></td></tr>
+<tr><td>Duration</td><td>385s</td><td>95s</td><td>307s</td></tr>
+<tr><td>Cost</td><td>$1.9589</td><td>$0.3669</td><td>$1.6781</td></tr>
+<tr><td>Tasks Completed</td><td>11</td><td>11</td><td>0</td></tr>
+</tbody></table>
+<h2>Efficiency Comparison</h2>
+<ul>
+<li>4x faster than Sonnet (95s vs 385s)</li>
+<li>5x cheaper than Sonnet ($0.37 vs $1.96)</li>
+<li>Lowest token consumption (2.2M in vs 5.1M for Sonnet)</li>
+<li><strong>Opus</strong>: Middle ground</li>
+<li>Moderate duration (307s) and cost ($1.68)</li>
+<li>4.4M tokens consumed</li>
+<li><strong>Sonnet</strong>: Most resource-intensive</li>
+<li>Longest duration and highest cost</li>
+<li>Over 5M input tokens processed</li>
+</ul>
+<h2>Quality Comparison</h2>
+<ul>
+<li><strong>Sonnet</strong>: Most thorough documentation</li>
+<li>Logged 15 detailed observations including 5 CLI/UX issues</li>
+<li>Identified missing CLI commands (executions, audit events)</li>
+<li>Documented workarounds for each blocker</li>
+<li>Most comprehensive issue tracking</li>
+<li>Logged 8 observations covering key UX friction points</li>
+<li>Identified command naming inconsistencies and missing CLI features</li>
+<li>Practical, actionable findings despite faster execution</li>
+<li><strong>Opus</strong>: Task completion only</li>
+<li>Zero observations logged (concerning for QA purposes)</li>
+<li>Completed all tasks but provided no debugging insights</li>
+<li>Report appears truncated</li>
+</ul>
+<h2>Approach Differences</h2>
+<ul>
+<li><strong>Sonnet</strong>: Methodical, documentation-focused</li>
+<li>Extensively explored edge cases and error conditions</li>
+<li>Proactively tested alternative approaches when commands failed</li>
+<li>Heavy emphasis on verification and audit trail review</li>
+<li><strong>Haiku</strong>: Pragmatic trial-and-error</li>
+<li>Quickly adapted when initial commands failed</li>
+<li>Efficient discovery through experimentation</li>
+<li>Minimal redundant exploration</li>
+<li><strong>Opus</strong>: Silent execution</li>
+<li>No observable logging strategy</li>
+<li>Completed tasks without documenting the journey</li>
+<li>Unclear how issues were identified or resolved</li>
+</ul>
+<h2>Recommendations</h2>
+<ul>
+<li><strong>For production onboarding testing</strong>: <strong>Haiku</strong></li>
+<li>Best cost-performance ratio (5x cheaper than alternatives)</li>
+<li>Still captures critical UX issues despite speed</li>
+<li>Suitable for frequent regression testing where budget matters</li>
+<li><strong>For deep QA/documentation work</strong>: <strong>Sonnet</strong></li>
+<li>Superior observational detail for bug reports</li>
+<li>Best for initial platform evaluation or major releases</li>
+<li>Worth the cost when comprehensive issue tracking is required</li>
+<li>Lack of observations makes it unsuitable for QA work</li>
+<li>No visibility into problem-solving approach</li>
+<li>Cost doesn't justify the limited insights provided</li>
+<li><strong>Overall verdict</strong>: Haiku offers the best balance for routine onboarding validation, while Sonnet should be reserved for thorough exploratory testing where detailed documentation justifies the 5x cost premium.</li>
+</ul>
+</div>
+<div class="tab-content" id="tab-sonnet">
+<h1>Jentic Onboarding Evaluation [PASS]</h1>
+<h2>Scorecard</h2>
+<table>
+<thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Tasks passed</td><td>11/11</td></tr>
+<tr><td>Tasks skipped</td><td>0/11</td></tr>
+<tr><td>Tasks blocked</td><td>0/11</td></tr>
+<tr><td>Duration</td><td>6m 24s</td></tr>
+<tr><td>Cost</td><td>$1.96</td></tr>
+<tr><td>Blockers found</td><td>0</td></tr>
+</tbody></table>
+<h2>Journey</h2>
+<p>The agent successfully completed all 11 onboarding tasks, from registration through making proxied API requests and verifying audit trails. Despite encountering several CLI usability issues (missing commands for executions/events, inspect operation syntax errors, profile directory confusion), the agent adapted by using curl directly and completed the evaluation with a positive recommendation.</p>
+<h2>Key Friction Points</h2>
+<ul>
+<li>OpenAPI specs don't document authentication requirements (auth:null)</li>
+<li>CLI 'jentic inspect' command failed with operation ID syntax, unclear error message</li>
+<li>Missing CLI commands for 'executions' and 'events' forced fallback to curl</li>
+<li>Attempting to cat .jentic/profiles/default failed because it's a directory, not a file</li>
+<li>No helper command to extract tokens for scripting workflows</li>
+</ul>
+<h2>Unlogged Insights</h2>
+<ul>
+<li>Agent praised transparent credential injection and strong governance features</li>
+<li>Agent found the platform 'agent-friendly' with good observability despite CLI gaps</li>
+<li>Agent recommended platform for teams building AI agents needing multi-API access with governance</li>
+<li>Fast access approval (seconds) was noted as a positive user experience</li>
+<li>Large API catalog (5,981 APIs) was viewed as a strength</li>
+</ul>
+<h2>Task Results</h2>
+<h3>[PASS] register-agent</h3>
+<h3>[PASS] authenticate</h3>
+<h3>[PASS] discover-apis</h3>
+<h3>[PASS] find-credential</h3>
+<p><strong>DOCS</strong></p>
+<ul>
+<li>Agent observed OpenAPI spec does not document authentication requirements (auth field shows null)</li>
+</ul>
+<h3>[PASS] inspect-api-operations</h3>
+<p><strong>AX</strong></p>
+<ul>
+<li>CLI error: 'jentic inspect jentic-test/test-api/1.0.0/GET:/get' failed with exit code 2, operation not found; agent had to use alternative approach</li>
+</ul>
+<h3>[PASS] read-api-spec</h3>
+<h3>[PASS] add-to-toolkit</h3>
+<h3>[PASS] verify-access-granted</h3>
+<p><strong>AX</strong></p>
+<ul>
+<li>CLI error: 'cat .jentic/profiles/default' failed (is a directory), causing JSON parse error; agent worked around issue</li>
+</ul>
+<h3>[PASS] make-proxied-request</h3>
+<h3>[PASS] check-execution-history</h3>
+<p><strong>AX</strong></p>
+<ul>
+<li>Agent noted missing CLI command for executions, had to use curl directly to query execution records</li>
+</ul>
+<h3>[PASS] view-audit-events</h3>
+<p><strong>AX</strong></p>
+<ul>
+<li>Agent noted missing CLI command for audit events, had to use curl directly to browse audit log</li>
+</ul>
+<h2>Issues Found</h2>
+<table>
+<thead><tr><th>#</th><th>Level</th><th>Task</th><th>Description</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>AX</strong></td><td>inspect-api-operations</td><td>CLI error: 'jentic inspect jentic-test/test-api/1.0.0/GET:/get' failed with exit code 2, operation not found; agent had to use alternative approach</td></tr>
+<tr><td>2</td><td><strong>AX</strong></td><td>verify-access-granted</td><td>CLI error: 'cat .jentic/profiles/default' failed (is a directory), causing JSON parse error; agent worked around issue</td></tr>
+<tr><td>3</td><td><strong>AX</strong></td><td>check-execution-history</td><td>Agent noted missing CLI command for executions, had to use curl directly to query execution records</td></tr>
+<tr><td>4</td><td><strong>AX</strong></td><td>view-audit-events</td><td>Agent noted missing CLI command for audit events, had to use curl directly to browse audit log</td></tr>
+<tr><td>5</td><td><strong>docs</strong></td><td>find-credential</td><td>Agent observed OpenAPI spec does not document authentication requirements (auth field shows null)</td></tr>
+</tbody></table>
+<h2>Run Metadata</h2>
+<table>
+<thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>
+<tr><td>Run ID</td><td><code>019ff55a-2700-77a1-8747-b3aad9661256</code></td></tr>
+<tr><td>Timestamp</td><td>2026-08-12T09:49:52</td></tr>
+<tr><td>Model</td><td>eu.anthropic.claude-sonnet-4-5-20250929-v1:0</td></tr>
+<tr><td>Config</td><td><code>products/jentic.yaml</code></td></tr>
+<tr><td>Duration</td><td>6m 24s</td></tr>
+<tr><td>Cost</td><td>$1.9589</td></tr>
+<tr><td>Outcome</td><td>succeeded</td></tr>
+</tbody></table>
+</div>
+<div class="tab-content" id="tab-haiku">
+<h1>Jentic Onboarding Evaluation [PASS]</h1>
+<h2>Scorecard</h2>
+<table>
+<thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Tasks passed</td><td>11/11</td></tr>
+<tr><td>Tasks skipped</td><td>0/11</td></tr>
+<tr><td>Tasks blocked</td><td>0/11</td></tr>
+<tr><td>Duration</td><td>1m 34s</td></tr>
+<tr><td>Cost</td><td>$0.37</td></tr>
+<tr><td>Blockers found</td><td>0</td></tr>
+</tbody></table>
+<h2>Journey</h2>
+<p>Agent successfully completed all 11 onboarding goals on the Jentic platform. Registration and authentication were transparent with auto-approval; API discovery, credential location, and toolkit access followed a logical CLI-first workflow. The agent made a successful proxied request through the broker and verified complete audit trails for both execution history and platform events.</p>
+<h2>Key Friction Points</h2>
+<ul>
+<li>Command naming: <code>jentic apis</code> (plural) not immediately obvious; agent tried <code>jentic api</code> first</li>
+<li>API reference format: agent initially used invalid format before discovering vendor/name/version requirement</li>
+<li>Broker URL construction: agent tried incorrect URL format twice before discovering default settings worked</li>
+<li>Execution history discovery: no CLI command; agent had to find REST API endpoint directly</li>
+</ul>
+<h2>Unlogged Insights</h2>
+<ul>
+<li>No guardrail violations detected; agent did not attempt to read harness infrastructure, access databases, or inspect environment variables</li>
+<li>All 11 tasks passed verification with 100% scores; narration aligned perfectly with ground truth</li>
+<li>Credential injection through broker is transparent to agent; no secrets exposed in logs or narration</li>
+<li>Complete audit trail maintained for all operations, supporting compliance and debugging workflows</li>
+</ul>
+<h2>Task Results</h2>
+<h3>[PASS] register-agent</h3>
+<h3>[PASS] authenticate</h3>
+<h3>[PASS] discover-apis</h3>
+<p><strong>DOCS</strong></p>
+<ul>
+<li>Agent initially tried <code>jentic api</code> (singular) before discovering correct command is <code>jentic apis</code> (plural). Minor UX friction.</li>
+</ul>
+<h3>[PASS] find-credential</h3>
+<p><strong>DOCS</strong></p>
+<ul>
+<li>Agent initially tried invalid API reference format before discovering correct format requires vendor/name/version structure.</li>
+</ul>
+<h3>[PASS] inspect-api-operations</h3>
+<h3>[PASS] read-api-spec</h3>
+<h3>[PASS] add-to-toolkit</h3>
+<h3>[PASS] verify-access-granted</h3>
+<h3>[PASS] make-proxied-request</h3>
+<p><strong>MISC</strong></p>
+<ul>
+<li>Agent encountered broker connection refused errors on first two attempts (incorrect URL format), then succeeded with default broker settings.</li>
+</ul>
+<h3>[PASS] check-execution-history</h3>
+<p><strong>DOCS</strong></p>
+<ul>
+<li>Agent initially searched for <code>jentic executions</code> command before discovering execution history is accessible via REST API endpoint only.</li>
+</ul>
+<h3>[PASS] view-audit-events</h3>
+<h2>Issues Found</h2>
+<table>
+<thead><tr><th>#</th><th>Level</th><th>Task</th><th>Description</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>docs</strong></td><td>discover-apis</td><td>Agent initially tried <code>jentic api</code> (singular) before discovering correct command is <code>jentic apis</code> (plural). Minor UX friction.</td></tr>
+<tr><td>2</td><td><strong>docs</strong></td><td>find-credential</td><td>Agent initially tried invalid API reference format before discovering correct format requires vendor/name/version structure.</td></tr>
+<tr><td>3</td><td><strong>docs</strong></td><td>check-execution-history</td><td>Agent initially searched for <code>jentic executions</code> command before discovering execution history is accessible via REST API endpoint only.</td></tr>
+<tr><td>4</td><td><strong>misc</strong></td><td>make-proxied-request</td><td>Agent encountered broker connection refused errors on first two attempts (incorrect URL format), then succeeded with default broker settings.</td></tr>
+</tbody></table>
+<h2>Run Metadata</h2>
+<table>
+<thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>
+<tr><td>Run ID</td><td><code>019ff55a-26fb-7ba1-b08f-33622bfd94d4</code></td></tr>
+<tr><td>Timestamp</td><td>2026-08-12T09:44:38</td></tr>
+<tr><td>Model</td><td>eu.anthropic.claude-haiku-4-5-20251001-v1:0</td></tr>
+<tr><td>Config</td><td><code>products/jentic.yaml</code></td></tr>
+<tr><td>Duration</td><td>1m 34s</td></tr>
+<tr><td>Cost</td><td>$0.3669</td></tr>
+<tr><td>Outcome</td><td>succeeded</td></tr>
+</tbody></table>
+</div>
+<div class="tab-content" id="tab-opus">
+<h1>Jentic Onboarding Evaluation [PASS]</h1>
+<h2>Scorecard</h2>
+<table>
+<thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Tasks passed</td><td>11/11</td></tr>
+<tr><td>Tasks skipped</td><td>0/11</td></tr>
+<tr><td>Tasks blocked</td><td>0/11</td></tr>
+<tr><td>Duration</td><td>5m 7s</td></tr>
+<tr><td>Cost</td><td>$1.68</td></tr>
+<tr><td>Blockers found</td><td>0</td></tr>
+</tbody></table>
+<h2>Task Results</h2>
+<h3>[PASS] register-agent</h3>
+<h3>[PASS] authenticate</h3>
+<h3>[PASS] discover-apis</h3>
+<h3>[PASS] find-credential</h3>
+<h3>[PASS] inspect-api-operations</h3>
+<h3>[PASS] read-api-spec</h3>
+<h3>[PASS] add-to-toolkit</h3>
+<h3>[PASS] verify-access-granted</h3>
+<h3>[PASS] make-proxied-request</h3>
+<h3>[PASS] check-execution-history</h3>
+<h3>[PASS] view-audit-events</h3>
+<h2>Run Metadata</h2>
+<table>
+<thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>
+<tr><td>Run ID</td><td><code>019ff55a-2708-74e0-80ff-9e40d3f43392</code></td></tr>
+<tr><td>Timestamp</td><td>2026-08-12T09:47:45</td></tr>
+<tr><td>Model</td><td>eu.anthropic.claude-opus-4-5-20250514-v1:0</td></tr>
+<tr><td>Config</td><td><code>products/jentic.yaml</code></td></tr>
+<tr><td>Duration</td><td>5m 7s</td></tr>
+<tr><td>Cost</td><td>$1.6781</td></tr>
+<tr><td>Outcome</td><td>succeeded</td></tr>
+</tbody></table>
+<hr>
+</div>
+
+
+<footer class="report-footer">
+  <span>Generated by Onboarding QA Harness</span>
+  <span class="powered">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.5 25.4 83.3 66.8" fill="currentColor">
+      <path d="M94.04,26.63c-2.28-.32-4.91,2.9-7.17,8.67-2.61,6.68-5.26,13.38-8.06,19.87l-.03.06-1.57,3.69h0s-.05.13-.05.13c-1.16,2.74-5,11.78-6.24,14.68-.82,1.94-1.7,3.8-2.65,5.59,0,0,0,0,0,.01h0s-.01.02-.02.03c-.65,1.24-1.37,2.39-2.15,3.4-5.36,6.93-12.54,8.78-17.79,9.07-7.89.13-18.36-3.07-22.73-14.86-2.07-5.36-2.58-11.83-2.41-18.05h36.34s-1.47,3.37-1.47,3.37l-.3.69-3.06.08c-2.66.07-5.24.04-7.93.16-2.38.11-4.62-.08-6.49,2.04-.74.84-1.23,1.86-1.49,2.95-.35,1.51-.15,2.63.59,4.45,1.52,3.38,4.63,5.4,8.33,5.4.11,0,.23,0,.34,0,2.09-.07,4.28-.8,6.08-2.14,1.59-1.19,2.78-3.02,3.71-5.05l2.33-5.85,14.87-35.07h0s0-.01,0-.01c.38-.96.76-1.92,1.14-2.88,0-.01,0-.02.01-.03.68-1.66,1.45-1.67,1.46-1.67,0,0,2.45-.61,7.67-.61,4.68,0,7.92.42,8.06.51.13.09.66.16.65,1.39Z"/>
+      <path d="M104.8,58.91h-.03l-1.96-6.2-.02-.06-2.06-6.51h0s-3.83-12.16-3.83-12.16c-.72-2.15-1.34-4.39-3.11-4.01-3.1.68-4.9,5.86-6.39,9.94-.36.97-.73,2.03-.93,3.16l.47.58,12.4,15.26.14.17h-16.88l-2.38-.02-.02.05-1.41,3.24-.3.7h27.65l-1.33-4.14Z"/>
+    </svg>
+    jentic.com
+  </span>
+</footer>
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
