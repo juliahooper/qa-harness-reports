@@ -1,0 +1,15 @@
+{"task_id": "register-agent", "type": "goal_complete", "level": null, "message": "Agent registered successfully in ~3 seconds, status=active", "_timestamp": "2026-08-13T15:29:28.690720+00:00"}
+{"task_id": "authenticate", "type": "goal_complete", "level": null, "message": "JWT bearer token issued automatically during registration", "_timestamp": "2026-08-13T15:29:28.690737+00:00"}
+{"task_id": "discover-apis", "type": "goal_complete", "level": null, "message": "Catalog endpoint accessed; agent found 1 local API and 5983 public APIs", "_timestamp": "2026-08-13T15:29:28.690741+00:00"}
+{"task_id": "find-credential", "type": "goal_complete", "level": null, "message": "Located jentic-test/test-api with GET /get endpoint", "_timestamp": "2026-08-13T15:29:28.690744+00:00"}
+{"task_id": "find-credential", "type": "note", "level": "AX", "message": "Agent hit error 'invalid API reference jentic-test/test-api; expected vendor/name/version' \u2014 required full version format", "_timestamp": "2026-08-13T15:29:28.690747+00:00"}
+{"task_id": "inspect-api-operations", "type": "goal_complete", "level": null, "message": "Operations endpoint accessed; agent retrieved operation details", "_timestamp": "2026-08-13T15:29:28.690750+00:00"}
+{"task_id": "read-api-spec", "type": "goal_complete", "level": null, "message": "OpenAPI 3.0.3 spec downloaded successfully", "_timestamp": "2026-08-13T15:29:28.690752+00:00"}
+{"task_id": "discover-oauth-metadata", "type": "goal_complete", "level": null, "message": "OAuth server metadata endpoint accessed", "_timestamp": "2026-08-13T15:29:28.690755+00:00"}
+{"task_id": "add-to-toolkit", "type": "goal_complete", "level": null, "message": "Access request filed and auto-approved", "_timestamp": "2026-08-13T15:29:28.690757+00:00"}
+{"task_id": "verify-access-granted", "type": "goal_complete", "level": null, "message": "Agent confirmed toolkit binding after token refresh", "_timestamp": "2026-08-13T15:29:28.690759+00:00"}
+{"task_id": "make-proxied-request", "type": "goal_complete", "level": null, "message": "Proxied GET request to test API succeeded; execution logged", "_timestamp": "2026-08-13T15:29:28.690761+00:00"}
+{"task_id": "inspect-before-execute", "type": "note", "level": "bug", "message": "Agent narration claims inspect command was used to preview operations, but verification shows POST /inspect endpoint was never called (0 matches)", "_timestamp": "2026-08-13T15:29:28.690763+00:00"}
+{"task_id": "check-execution-history", "type": "goal_complete", "level": null, "message": "Execution records retrieved via API", "_timestamp": "2026-08-13T15:29:28.690766+00:00"}
+{"task_id": "view-audit-events", "type": "goal_complete", "level": null, "message": "Audit log accessed; 50 events examined", "_timestamp": "2026-08-13T15:29:28.690768+00:00"}
+{"task_id": "check-agent-scopes", "type": "goal_complete", "level": null, "message": "Agent profile and permissions verified", "_timestamp": "2026-08-13T15:29:28.690771+00:00"}
